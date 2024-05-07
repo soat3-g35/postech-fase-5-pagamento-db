@@ -10,62 +10,36 @@ data "aws_vpc" "selected" {
   }
 }
 
-data "aws_subnet_ids" "example" {
+data "aws_subnet_ids" "g35_subnets" {
   vpc_id = data.aws_vpc.selected.id
 }
 
-data "aws_subnet" "example" {
-  for_each = data.aws_subnet_ids.example.ids
+data "aws_subnet" "g35_subnet" {
+  for_each = data.aws_subnet_ids.g35_subnets.ids
   id       = each.value
 }
 
 output "subnet_cidr_blocks" {
-  value = [for s in data.aws_subnet.example : s.cidr_block]
+  value = [for s in data.aws_subnet.g35_subnet : s.cidr_block]
 }
 
-# data "aws_subnet_ids" "selected" {
-#   filter {
-#     name   = "tag:Name"
-#     values = ["g35-vpc"] # insert values here
-#   }
-# }
-
-# data "aws_subnet_ids" "selected" {
-
-
-
-#   filter {
-#         name   = "vpc-id"
-#         values = [data.aws_vpc.selected.id]
-#       }
-
-#       tags = {
-#         Name = "postech-vpc"
-#       }
-
-#   # filter {
-#   #   name   = "tag:Name"
-#   #   values = ["postech-vpc"]
-#   # }
-# }
-
 resource "aws_security_group" "instance" {
-  name   = "postgres-security-group"
+  name   = "mongodb-security-group"
   vpc_id = data.aws_vpc.selected.id
   ingress {
-    from_port   = 5432
-    to_port     = 5432
+    from_port   = 0
+    to_port     = 0
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
-resource "aws_db_subnet_group" "education" {
-  name       = "education"
-  subnet_ids = data.aws_subnet_ids.example.ids
+resource "aws_db_subnet_group" "g35_subnet_group" {
+  name       = "g35_subnet_group"
+  subnet_ids = data.aws_subnet_ids.g35_subnets.ids
 
   tags = {
-    Name = "Education"
+    Name = "g35"
   }
 }
 
