@@ -43,20 +43,35 @@ resource "aws_db_subnet_group" "g35_subnet_group" {
   }
 }
 
-resource "aws_db_instance" "education" {
-  identifier             = "education"
-  instance_class         = "db.t3.micro"
-  allocated_storage      = 5
-  engine                 = "postgres"
-  engine_version         = "14.11"
-  username               = "postgres"
-  password               = "postgres"
-  publicly_accessible    = true
-  skip_final_snapshot    = true
-  db_subnet_group_name   = aws_db_subnet_group.education.name
-  vpc_security_group_ids = [aws_security_group.instance.id]
+provider "mongodbatlas" {
+  public_key = "abcdefgh"
+  private_key  = "abcdefgh-abcd-1234-5678-abcdefghijkl"
+}
 
-  tags = {
-    Name = "MyPostgresDB"
-  }
+module "mongodb" {
+  source                = "../../"
+  version               = "~>0.0.1" // Change to the required version.
+  environment           = "test-environment"
+  app_name              = "test-app"
+  aws_profile           = "my-aws-profile"
+  env_type              = "non-prod"
+  atlasprojectid        = "1234567890abcdefghijklmno"
+  atlas_region          = "US_EAST_1"
+  atlas_num_of_replicas = 3
+  backup_on_destroy     = true
+  restore_on_create     = true
+  allowed_envs          = "mv_env"
+  db_name               = "test-db"
+  init_db_environment   = "src-db"
+  init_db_aws_profile   = "src-aws-profile"
+  ip_whitelist          = ["127.0.0.1","127.0.0.2","127.0.0.3"]
+  atlas_num_of_shards         = 1
+  mongo_db_major_version      = "4.2"
+  disk_size_gb                = 10
+  provider_disk_iops          = 1000
+  provider_volume_type        = "STANDARD"
+  provider_instance_size_name = "M10"
+  aws_vpce = ""
+  db_subnet_group_name   = aws_db_subnet_group.g35_subnet_group.name
+  vpc_security_group_ids = [aws_security_group.instance.id]
 }
