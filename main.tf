@@ -6,7 +6,7 @@ provider "aws" {
 data "aws_vpc" "selected" {
   filter {
     name   = "tag:Name"
-    values = ["postech-vpc"]
+    values = ["g35-vpc"]
   }
 }
 
@@ -26,7 +26,7 @@ output "subnet_cidr_blocks" {
 # data "aws_subnet_ids" "selected" {
 #   filter {
 #     name   = "tag:Name"
-#     values = ["postech-vpc"] # insert values here
+#     values = ["g35-vpc"] # insert values here
 #   }
 # }
 
