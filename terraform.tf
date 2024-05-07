@@ -6,7 +6,7 @@ terraform {
   cloud {
     organization = "DevopsFiapSoat3-G35"
     workspaces {
-      name = "postech-fase-3-db"
+      name = "postech-fase-4-pagamento-db"
     }
   }
 
@@ -15,6 +15,9 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 3.20.0"
     }
+    mongodbatlas = {
+      source = "mongodb/mongodbatlas"
+      version = "0.9.0"
+    }
   }
-
 }
