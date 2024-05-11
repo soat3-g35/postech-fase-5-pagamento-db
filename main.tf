@@ -37,6 +37,6 @@ resource "aws_dynamodb_table" "pagamento" {
     environment = "${var.environment}"
   }
 
- vpc_endpoint_id = data.aws_vpc.selected.id
- route_table_id  = data.aws_vpc.selected.main_route_table_id
+  vpc_endpoint_id = data.aws_vpc.selected.id
+  route_table_id  = data.aws_vpc.selected.main_route_table_id
 }
