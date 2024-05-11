@@ -23,17 +23,20 @@ output "subnet_cidr_blocks" {
   value = [for s in data.aws_subnet.g35_subnet : s.cidr_block]
 }
 
-resource "aws_dynamodb_table" "first_table" {
+resource "aws_dynamodb_table" "pagamento" {
 
   name         = var.table_name
   billing_mode = var.table_billing_mode
-  hash_key     = "employee-id"
+  hash_key     = "pagamento-id"
   attribute {
-    name = "employee-id"
+    name = "pagamento-id"
     type = "S"
   }
 
   tags = {
     environment = "${var.environment}"
   }
+
+ vpc_endpoint_id = data.aws_vpc.selected.id
+ route_table_id  = data.aws_vpc.selected.main_route_table_id
 }
