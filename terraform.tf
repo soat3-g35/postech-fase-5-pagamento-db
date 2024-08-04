@@ -6,7 +6,7 @@ terraform {
   cloud {
     organization = "DevopsFiapSoat3-G35"
     workspaces {
-      name = "postech-fase-4-pagamento-db"
+      name = "postech-fase-5-pagamento-db"
     }
   }
 
